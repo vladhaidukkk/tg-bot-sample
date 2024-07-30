@@ -1,5 +1,8 @@
 default: fmt lint
 
+run:
+	python -m bot.main
+
 fmt:
 	ruff format
 
