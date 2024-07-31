@@ -5,15 +5,38 @@ from re import Match
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
+from aiogram.utils.deep_linking import create_start_link
 
 from bot.config import settings
 
 dp = Dispatcher()
 
 
+@dp.message(
+    CommandStart(
+        deep_link=True,
+        deep_link_encoded=True,
+        magic=F.args.regexp(r"^id:(\d+),username:(.+)$").as_("referral"),
+    )
+)
+async def referral_start_command_handler(message: Message, referral: Match[str]) -> None:
+    ref_username = referral.group(2)
+    await message.answer(text=f"👋 {message.from_user.full_name}. I see @{ref_username} told you about us 🥰")
+
+
 @dp.message(CommandStart())
 async def start_command_handler(message: Message) -> None:
     await message.answer(text=f"👋 {message.from_user.full_name}")
+
+
+@dp.message(Command("ref"))
+async def ref_command_handler(message: Message) -> None:
+    ref_link = await create_start_link(
+        bot=message.bot,
+        payload=f"id:{message.from_user.id},username:{message.from_user.username}",
+        encode=True,
+    )
+    await message.answer(text=f"Your referral link: {ref_link}")
 
 
 @dp.message(Command("help"))
