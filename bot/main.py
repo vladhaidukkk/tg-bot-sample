@@ -3,7 +3,7 @@ import logging
 from re import Match
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import CommandStart
+from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 
 from bot.config import settings
@@ -14,6 +14,11 @@ dp = Dispatcher()
 @dp.message(CommandStart())
 async def start_command_handler(message: Message) -> None:
     await message.answer(text=f"👋 {message.from_user.full_name}")
+
+
+@dp.message(Command("help"))
+async def help_command_handler(message: Message) -> None:
+    await message.answer("I see you need a hero 🦸")
 
 
 @dp.message(F.text.regexp(r"^reply:(.+)$").as_("text"))
