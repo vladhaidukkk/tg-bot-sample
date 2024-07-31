@@ -1,7 +1,8 @@
 import asyncio
 import logging
+from re import Match
 
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
@@ -13,6 +14,11 @@ dp = Dispatcher()
 @dp.message(CommandStart())
 async def start_command_handler(message: Message) -> None:
     await message.answer(f"👋 {message.from_user.full_name}")
+
+
+@dp.message(F.text.regexp(r"^reply:(.+)$").as_("text"))
+async def reply_handler(message: Message, text: Match[str]) -> None:
+    await message.reply(text.group(1))
 
 
 @dp.message()
