@@ -21,11 +21,8 @@ async def help_command_handler(message: Message) -> None:
     await message.answer("I see you need a hero 🦸")
 
 
-@dp.message(Command("explain"))
+@dp.message(Command("explain", magic=F.args))
 async def explain_command_handler(message: Message, command: CommandObject) -> None:
-    if not command.args:
-        await message.answer("Please pass arguments to the /explain command")
-        return
     args = command.args.split(" ")
     for arg in args:
         await message.answer(text=f"Explanation for {arg} 💡")
