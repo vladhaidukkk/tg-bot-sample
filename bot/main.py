@@ -3,7 +3,7 @@ import logging
 from re import Match
 
 from aiogram import Bot, Dispatcher, F
-from aiogram.filters import Command, CommandStart
+from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
 
 from bot.config import settings
@@ -19,6 +19,16 @@ async def start_command_handler(message: Message) -> None:
 @dp.message(Command("help"))
 async def help_command_handler(message: Message) -> None:
     await message.answer("I see you need a hero 🦸")
+
+
+@dp.message(Command("explain"))
+async def explain_command_handler(message: Message, command: CommandObject) -> None:
+    if not command.args:
+        await message.answer("Please pass arguments to the /explain command")
+        return
+    args = command.args.split(" ")
+    for arg in args:
+        await message.answer(text=f"Explanation for {arg} 💡")
 
 
 @dp.message(F.text.regexp(r"^reply:(.+)$").as_("text"))
