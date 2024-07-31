@@ -5,6 +5,8 @@ from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import Message
 from aiogram.utils.deep_linking import create_start_link
 
+from bot.keyboards import MainKeyboardButton, main_keyboard
+
 router = Router(name=__name__)
 
 
@@ -17,15 +19,18 @@ router = Router(name=__name__)
 )
 async def referral_start_command_handler(message: Message, referral: Match[str]) -> None:
     ref_username = referral.group(2)
-    await message.answer(text=f"👋 {message.from_user.full_name}. I see @{ref_username} told you about us 🥰")
+    await message.answer(
+        text=f"👋 {message.from_user.full_name}. I see @{ref_username} told you about us 🥰", reply_markup=main_keyboard
+    )
 
 
 @router.message(CommandStart())
 async def start_command_handler(message: Message) -> None:
-    await message.answer(text=f"👋 {message.from_user.full_name}")
+    await message.answer(text=f"👋 {message.from_user.full_name}", reply_markup=main_keyboard)
 
 
 @router.message(Command("ref"))
+@router.message(F.text == MainKeyboardButton.INVITE)
 async def ref_command_handler(message: Message) -> None:
     ref_link = await create_start_link(
         bot=message.bot,
