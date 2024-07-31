@@ -54,6 +54,11 @@ async def voice_handler(message: Message) -> None:
     await message.answer_voice(voice=voice_id, caption="Sounds interesting 🤔")
 
 
+@router.message(F.contact)
+async def contact_handler(message: Message) -> None:
+    await message.answer(text="Thank you for the trust 🙏")
+
+
 @router.message()
 @flags.chat_action(action=ChatAction.TYPING)
 async def echo_handler(message: Message) -> None:
