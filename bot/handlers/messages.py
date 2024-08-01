@@ -43,6 +43,11 @@ async def animation_handler(message: Message) -> None:
 async def document_handler(message: Message) -> None:
     await asyncio.sleep(2)
     document_id = message.document.file_id
+    document = await message.bot.get_file(file_id=document_id)
+    document_ext = document.file_path.rsplit(".", 1)[-1]
+    await message.bot.download_file(
+        file_path=document.file_path, destination=f"documents/{document.file_id}.{document_ext}"
+    )
     await message.answer_document(document=document_id, caption="Thank you for the document. It is interesting 🧐")
 
 
