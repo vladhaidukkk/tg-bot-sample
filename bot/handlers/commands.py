@@ -1,6 +1,7 @@
 from re import Match
 
 from aiogram import F, Router
+from aiogram.enums.dice_emoji import DiceEmoji
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message, WebAppInfo
 from aiogram.utils.deep_linking import create_start_link, create_telegram_link
@@ -66,3 +67,9 @@ async def explain_command_handler(message: Message, command: CommandObject) -> N
     args = command.args.split(" ")
     for arg in args:
         await message.answer(text=f"Explanation for {arg} 💡")
+
+
+@router.message(Command("play"))
+async def play_command_handler(message: Message) -> None:
+    result = await message.answer_dice(DiceEmoji.SLOT_MACHINE)
+    print(f"Dice value: {result.dice.value}")
