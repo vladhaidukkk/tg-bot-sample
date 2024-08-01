@@ -6,10 +6,12 @@ from aiogram.utils.chat_action import ChatActionMiddleware
 
 from bot.config import settings
 from bot.handlers import router
+from bot.middlewares import CounterMiddleware
 
 
 async def main() -> None:
     dp = Dispatcher()
+    dp.message.outer_middleware(CounterMiddleware())
     dp.message.middleware(ChatActionMiddleware())
     dp.include_router(router)
 
