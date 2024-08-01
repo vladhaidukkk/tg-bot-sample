@@ -67,5 +67,6 @@ async def contact_handler(message: Message) -> None:
 @router.message()
 @flags.chat_action(action=ChatAction.TYPING)
 async def echo_handler(message: Message) -> None:
+    raise ValueError(":D")
     await asyncio.sleep(2)
     await message.copy_to(chat_id=message.chat.id)
