@@ -22,6 +22,7 @@ async def main() -> None:
         print(f"ValueError was handled: {error.exception}")
 
     bot = Bot(token=settings.bot_token)
+    await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
 
