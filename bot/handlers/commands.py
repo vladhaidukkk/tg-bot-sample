@@ -2,7 +2,7 @@ from re import Match
 
 from aiogram import F, Router
 from aiogram.filters import Command, CommandObject, CommandStart
-from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message
+from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message, WebAppInfo
 from aiogram.utils.deep_linking import create_start_link, create_telegram_link
 
 from bot.keyboards import MainKeyboardButton, build_main_keyboard
@@ -24,7 +24,8 @@ async def referral_start_command_handler(message: Message, referral: Match[str])
             [
                 InlineKeyboardButton(text="👀 Go to Your Friend", url=create_telegram_link(ref_username)),
                 InlineKeyboardButton(text="🚀 Begin Your Journey", callback_data="begin"),
-            ]
+            ],
+            [InlineKeyboardButton(text="📺 Open YouTube", web_app=WebAppInfo(url="https://youtube.com"))],
         ]
     )
     await message.answer(
