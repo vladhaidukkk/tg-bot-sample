@@ -4,6 +4,7 @@ from aiogram import F, Router
 from aiogram.enums.dice_emoji import DiceEmoji
 from aiogram.filters import Command, CommandObject, CommandStart
 from aiogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup, Message, WebAppInfo
+from aiogram.utils import markdown
 from aiogram.utils.deep_linking import create_start_link, create_telegram_link
 
 from bot.keyboards import MainKeyboardButton, build_main_keyboard
@@ -43,7 +44,10 @@ async def begin_journey_handler(callback_query: CallbackQuery) -> None:
 
 @router.message(CommandStart())
 async def start_command_handler(message: Message) -> None:
-    await message.answer(text=f"👋 {message.from_user.full_name}", reply_markup=build_main_keyboard())
+    await message.answer(
+        text=markdown.text("👋", markdown.html_decoration.bold(message.from_user.full_name)),
+        reply_markup=build_main_keyboard(),
+    )
 
 
 @router.message(Command("ref"))

@@ -2,6 +2,8 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.filters import ExceptionTypeFilter
 from aiogram.types import ErrorEvent
 from aiogram.utils.chat_action import ChatActionMiddleware
@@ -21,7 +23,7 @@ async def main() -> None:
     async def value_error_handler(error: ErrorEvent) -> None:
         print(f"ValueError was handled: {error.exception}")
 
-    bot = Bot(token=settings.bot_token)
+    bot = Bot(token=settings.bot_token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
